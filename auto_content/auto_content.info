@@ -1,0 +1,4 @@
+name = Auto Content Generation
+description = "Automatic Node Generation Based on the Form Input"
+core = 7.x
+

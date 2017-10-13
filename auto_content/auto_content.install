@@ -1,0 +1,46 @@
+<?php 
+
+/**
+ * Implements hook_schema().
+ */
+function auto_content_schema() {
+  $schema = array();
+  
+  $schema['auto_content'] = array(
+    'description' => 'Store Automatic content generation details',
+    'fields' => array(
+	'auto_content_nid' => array(
+		'description' => 'The primary identifier for a node.',
+		'type' => 'serial',
+		'unsigned' => TRUE,
+		'not null' => TRUE,
+	),
+	'auto_content_path' => array(
+		'description' => 'Path to generate node',
+		'type' => 'varchar',
+		'length' => 255,
+		'not null' => TRUE,
+		'default' => '',
+	),
+	'auto_content_type' => array(
+		'description' => 'Path to generate node',
+		'type' => 'varchar',
+		'length' => 255,
+		'not null' => TRUE,
+		'default' => '',
+	),
+	'auto_node_type' => array(
+		'description' => 'The Node Ids.',
+		'type' => 'varchar',
+		'length' => 255,
+		'not null' => TRUE,
+		'default' => '',
+	),
+    ),
+'primary key' => array('auto_content_nid'),
+  );
+
+  return $schema;
+}
+
+

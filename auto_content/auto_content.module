@@ -1,0 +1,47 @@
+<?php
+
+/**
+ * Implements hook_menu().
+ */
+function auto_content_menu() {
+  $items = array();
+  $items['admin/config/auto-content'] = array(
+    'title' => 'Automatic Content Generation',
+    'description' => 'Configure for Automatic Node Generation',
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('auto_content_admin_settings_form'),
+    'access arguments' => array('access administration pages'),
+    'type' => MENU_NORMAL_ITEM,
+    'file' => 'auto_content.pages.inc',
+  );
+  $items['page/auto-content/%'] = array(
+    'title' => 'Auto Load Data',
+    'description' => 'Description here, mostly used for admin pages',
+    'page callback' => 'auto_content_callback',
+    'page arguments' => array(0),
+    'access arguments' => array('access administration pages'),
+  );
+  return $items;
+}
+function auto_content_callback($arg) {
+$tokens = explode('/', $_SERVER['REQUEST_URI']);
+$result = db_select('auto_content', 'ac')
+			->fields('ac', array('auto_node_type'))
+			->condition('auto_content_path',$tokens[4])
+			->execute()
+			->fetchCol();
+ $result=explode("#", $result[0]);
+ $res='<table style="width:100%" border=1>
+  <tr>
+    <th>Content Type Name</th>
+    <th>Node Title</th> 
+  </tr>';
+ foreach($result as $nid){
+    $res .='<tr>
+                <td>'.node_load($nid)->type.'</td>
+                <td>'.node_load($nid)->title.'</td>
+            </tr>';
+  }
+ $res .='</table>';
+  return t($res);
+}
